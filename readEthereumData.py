@@ -4,12 +4,16 @@ import socket
 import os
 import time
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
+endpoint = os.environ.get('endpoint')
 
 LAST_PROCESSED_BLOCK_FILE = 'last_processed_block.txt'
 conf = {'bootstrap.servers': 'localhost:9092',
         'client.id': socket.gethostname()}
 
-w3 = Web3(Web3.HTTPProvider('https://radial-dark-sanctuary.quiknode.pro/626969989a38ec9dbf89dec21e3e50f8f8cffc7f/'))
+w3 = Web3(Web3.HTTPProvider(f'{endpoint}'))
 
 
 def current_gas_price():

@@ -1,66 +1,31 @@
 version: '3.8'
 services:
-#  zookeeper:
-#    image: confluentinc/cp-zookeeper:latest
-#    container_name: zookeeper
-#    environment:
-#      ZOOKEEPER_CLIENT_PORT: 2181
-#      ZOOKEEPER_TICK_TIME: 2000
-#    ports:
-#      - "2181:2181"
-#      - "2888:2888"
-#      - "3888:3888"
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
 
-#  kafka:
-#    image: confluentinc/cp-kafka:latest
-#    container_name: kafka
-#    depends_on:
-#      - zookeeper
-#    ports:
-#      - "9092:9092"
-#      - "29092:29092"
-#    environment:
-#      KAFKA_BROKER_ID: 1
-#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
-#  postgres:
-#    image: postgres:latest
-#    container_name: postgres
-#    environment:
-#      POSTGRES_USER: root
-#      POSTGRES_PASSWORD: password
-#      POSTGRES_DB: root
-#    ports:
-#      - "5432:5432"
-#    volumes:
-#      - ./postgresql.conf:/etc/postgresql/postgresql.conf
-#      - pgdata:/var/lib/postgresql/data
-#    command: [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf" ]
-#
-#  kafka-connect:
-#    image: quay.io/debezium/connect:latest
-#    container_name: kafka-connect
-#    depends_on:
-#      - kafka
-#      - clickhouse
-#      - zookeeper
-#    environment:
-#      GROUP_ID: 1
-#      BOOTSTRAP_SERVERS: kafka:29092 # localhost wouldn't work
-#      CONFIG_STORAGE_TOPIC: orders-config
-#      OFFSET_STORAGE_TOPIC: orders-offsets
-#      STATUS_STORAGE_TOPIC: orders-status
-#      KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-#      VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-#      INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-#      INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-#      REST_ADVERTISED_HOST_NAME: kafka-connect
-#    ports:
-#      - "8083:8083"
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   clickhouse:
     image: 'clickhouse/clickhouse-server:latest'
@@ -82,6 +47,7 @@ services:
       - '127.0.0.1:9000:9000'
     depends_on:
       - clickhouse-keeper
+
   clickhouse-keeper:
     image: 'clickhouse/clickhouse-keeper:latest'
 #    user: '101:101'
@@ -103,6 +69,3 @@ services:
         - ADMIN_PASSWORD=admin
       ports:
         - '8088:8088'
-
-volumes:
-  pgdata:
