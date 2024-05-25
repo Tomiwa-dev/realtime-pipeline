@@ -32,17 +32,22 @@ This repository contains a realtime analytics pipeline that processes Ethereum b
 
    * create a `.env` file with the Ethereum node endpoint
 
-3. Start the services
-   To set up clickhouse 
+3. Start the services 
+
+   Check references below for more details on setting up all the necessary services.
 
     `docker-compose up -d`
 
 4. Run the Ethereum data ingestion script
+   
+   Before running the script create a file name last_processed_block.txt in your working directory. This file is used to track the last block read incase of failure.
 
-    `python readEthereumData.py`
+    `python read_ethereum_data.py`
 
-5. Run the Spark subscriber script
-Create a kafka topic called transform to write the transformed transactions to.
+5. Run the Spark subscriber script.
+
+   * Create a kafka topic called transform to write the transformed transactions to.
+   * Create an empty folder to for spark checkpoint.  
 
 
       kafka-topics --list --bootstrap-server localhost:9092`
@@ -60,5 +65,25 @@ Create a kafka topic called transform to write the transformed transactions to.
    Username: admin
    Password: admin
    Connect to Clickhouse and create dashboards and charts based on the transaction table.
+
+
+# REFERENCES 
+
+### Setting up Kafka on Docker
+
+https://www.baeldung.com/ops/kafka-docker-setup
+
+### Connecting Clickhouse to Kafka
+
+https://medium.com/@tim_lovenic/clickhouse-kafka-c3ffd54b459d
+
+### Setting up Superset on Docker 
+
+https://medium.com/towards-data-engineering/quick-setup-configure-superset-with-docker-a5cca3992b28
+
+### Setting up Clickhouse on Docker
+
+https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/README.md
+
 
 
