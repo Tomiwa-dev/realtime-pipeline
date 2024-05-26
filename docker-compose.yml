@@ -38,8 +38,8 @@ services:
       CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
       CLICKHOUSE_PASSWORD: password
     volumes:
-      - ./fs/volumes/clickhouse/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
-      - ./fs/volumes/clickhouse/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
+      - ./fs/volumes/clickhouse/etc/clickhouse-server/config.d/:/etc/clickhouse-server/config.d/config.xml
+      - ./fs/volumes/clickhouse/etc/clickhouse-server/users.d/:/etc/clickhouse-server/users.d/users.xml
       - ./clickhouse:/var/lib/clickhouse/
       - ./log:/var/log/clickhouse-server/
     ports:
@@ -58,14 +58,14 @@ services:
     ports:
       - '127.0.0.1:9181:9181'
 
-  superset:
-      build:
-        context: ./superset
-        dockerfile: Dockerfile
-      container_name: superset
-      environment:
-        - ADMIN_USERNAME=admin
-        - ADMIN_EMAIL=admin@superset.com
-        - ADMIN_PASSWORD=admin
-      ports:
-        - '8088:8088'
+#  superset:
+#      build:
+#        context: ./superset
+#        dockerfile: Dockerfile
+#      container_name: superset
+#      environment:
+#        - ADMIN_USERNAME=admin
+#        - ADMIN_EMAIL=admin@superset.com
+#        - ADMIN_PASSWORD=admin
+#      ports:
+#        - '8088:8088'
